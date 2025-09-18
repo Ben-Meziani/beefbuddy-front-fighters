@@ -15,6 +15,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 header {
@@ -27,7 +28,7 @@ header {
 }
 main {
   min-height: 100vh;
-  width: 100vw;
+  /* width: 100vw; */
   /* padding: 2rem;
     background-color: #f0f0f0;
     min-height: 100vh;
