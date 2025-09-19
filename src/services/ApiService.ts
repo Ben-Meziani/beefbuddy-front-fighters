@@ -17,7 +17,13 @@ const getHome = async () => {
     return response.data
 }
 
+const registerFighter = async (email: string, username: string, password: string) => {
+    const response = await api.post(`/register-fighter`, { email, username, password })
+    return response.data
+}
+
 export default {
     api,
-    getHome
+    getHome,
+    registerFighter
 }

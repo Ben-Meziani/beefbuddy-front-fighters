@@ -1,6 +1,6 @@
 import Home from '@/components/HomeSite/HomeSite.vue'
 // import Login from '@/components/LoginUser/LoginUser.vue'
-// import Register from '@/components/RegisterUser/RegisterUser.vue'
+import RegisterUserFighter from '@/components/RegisterUserFighter/RegisterUserFighter.vue'
 // import Profile from '@/components/ProfileUser/ProfileUser.vue'
 // import FightersList from '@/components/FightersList/FightersList.vue'
 // import FighterProfile from '@/components/FighterProfile/FighterProfile.vue'
@@ -19,10 +19,10 @@ const routes = [
 //     path: '/login',
 //     component: Login,
 //   },
-//   {
-//     path: '/register',
-//     component: Register
-//   },
+  {
+    path: '/register',
+    component: RegisterUserFighter
+  },
 //   {
 //     path: '/profile',
 //     component: Profile,

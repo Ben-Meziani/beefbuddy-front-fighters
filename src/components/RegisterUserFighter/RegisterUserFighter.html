@@ -1,0 +1,525 @@
+<div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+    <img
+      class="mx-auto h-10 w-auto"
+      src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+      alt="Your Company"
+    />
+    <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+      Créez votre compte
+    </h2>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <!-- General error message -->
+    <div v-if="errors.general" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+      <p class="text-sm text-red-600">{{ errors.general }}</p>
+    </div>
+
+    <form @submit.prevent="submit">
+      <div>
+        <label for="username" class="block text-sm/6 font-medium text-gray-900"
+          >Nom d'utilisateur</label
+        >
+        <div class="mt-2">
+          <input
+            type="text"
+            v-model="form.username"
+            @input="clearFieldError('username')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.username ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.username" class="mt-1 text-sm text-red-600">{{ errors.username }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+        <div class="mt-2">
+          <input
+            type="email"
+            v-model="form.email"
+            @input="clearFieldError('email')"
+            name="email"
+            id="email"
+            autocomplete="email"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.email ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="nickname" class="block text-sm/6 font-medium text-gray-900">Surnom</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="nickname"
+            id="nickname"
+            autocomplete="nickname"
+            v-model="form.nickname"
+            @input="clearFieldError('nickname')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.nickname ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.nickname" class="mt-1 text-sm text-red-600">{{ errors.nickname }}</p>
+        </div>
+      </div>
+      <div>
+        <label for="weight-class" class="block text-sm/6 font-medium text-gray-900">Catégorie de poids</label>
+        <div class="mt-2">
+          <select
+            type="select"
+            name="weight-class"
+            id="weight-class"
+            autocomplete="weight-class"
+            v-model="form.weightClass"
+            @input="clearFieldError('weightClass')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.weightClass ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          >
+              <option value="">Sélectionnez une catégorie</option>
+              <option value="Heavyweight">Poids lourd (93+ kg)</option>
+              <option value="Light Heavyweight">Poids mi-lourd (84-93 kg)</option>
+              <option value="Middleweight">Poids moyen (77-84 kg)</option>
+              <option value="Welterweight">Poids welter (70-77 kg)</option>
+              <option value="Lightweight">Poids léger (61-70 kg)</option>
+              <option value="Featherweight">Poids plume (57-61 kg)</option>
+              <option value="Bantamweight">Poids coq (52-57 kg)</option>
+              <option value="Flyweight">Poids mouche (48-52 kg)</option>
+              <option value="Strawweight">Poids paille (43-48 kg)</option>
+              <option value="Atomweight">Poids atome (-43 kg)</option>
+          </select>
+          <p v-if="errors.weightClass" class="mt-1 text-sm text-red-600">{{ errors.weightClass }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="height" class="block text-sm/6 font-medium text-gray-900">Taille</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="height"
+            id="height"
+            autocomplete="height"
+            v-model="form.height"
+            @input="clearFieldError('height')"
+            required
+          />
+        </div>
+        <p v-if="errors.height" class="mt-1 text-sm text-red-600">{{ errors.height }}</p>
+      </div>
+      <div>
+        <label for="weight" class="block text-sm/6 font-medium text-gray-900">Poids</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="weight"
+            id="weight"
+            autocomplete="weight"
+            v-model="form.weight"
+            @input="clearFieldError('weight')"
+            required
+          />
+        </div>
+        <p v-if="errors.weight" class="mt-1 text-sm text-red-600">{{ errors.weight }}</p>
+      </div>
+
+      <div>
+        <label for="reach" class="block text-sm/6 font-medium text-gray-900">Envergure</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="reach"
+            id="reach"
+            autocomplete="reach"
+            v-model="form.reach"
+            @input="clearFieldError('reach')"
+            required
+          />
+        </div>
+        <p v-if="errors.reach" class="mt-1 text-sm text-red-600">{{ errors.reach }}</p>
+      </div>
+      <div>
+        <label for="stance" class="block text-sm/6 font-medium text-gray-900">Stance</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="stance"
+            id="stance"
+            autocomplete="stance"
+            v-model="form.stance"
+            @input="clearFieldError('stance')"
+            required
+          />
+        </div>
+        <p v-if="errors.stance" class="mt-1 text-sm text-red-600">{{ errors.stance }}</p>
+      </div>
+      <div>
+        <label for="style" class="block text-sm/6 font-medium text-gray-900">Style</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="style"
+            id="style"
+            autocomplete="style"
+            v-model="form.style"
+            @input="clearFieldError('style')"
+            required
+          />
+        </div>
+        <p v-if="errors.style" class="mt-1 text-sm text-red-600">{{ errors.style }}</p>
+      </div>
+      <div>
+        <label for="place_of_birth" class="block text-sm/6 font-medium text-gray-900">Lieu de naissance</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="place_of_birth"
+            id="place_of_birth"
+            autocomplete="place_of_birth"
+            v-model="form.place_of_birth"
+            @input="clearFieldError('place_of_birth')"
+            required
+          />
+        </div>
+        <p v-if="errors.place_of_birth" class="mt-1 text-sm text-red-600">{{ errors.place_of_birth }}</p>
+      </div>
+      <div>
+        <label for="wins" class="block text-sm/6 font-medium text-gray-900">Victoires</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="wins"
+            id="wins"
+            autocomplete="wins"
+            v-model="form.wins"
+            @input="clearFieldError('wins')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.wins ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.wins" class="mt-1 text-sm text-red-600">{{ errors.wins }}</p>
+        </div>
+      </div>
+      <div>
+        <label for="losses" class="block text-sm/6 font-medium text-gray-900">Défaites</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="losses"
+            id="losses"
+            autocomplete="losses"
+            v-model="form.losses"
+            @input="clearFieldError('losses')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.losses ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.losses" class="mt-1 text-sm text-red-600">{{ errors.losses }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="draws" class="block text-sm/6 font-medium text-gray-900">Nuls</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="draws"
+            id="draws"
+            autocomplete="draws"
+            v-model="form.draws"
+            @input="clearFieldError('draws')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.draws ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.draws" class="mt-1 text-sm text-red-600">{{ errors.draws }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="country" class="block text-sm/6 font-medium text-gray-900">Pays</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="country"
+            id="country"
+            autocomplete="country"
+            v-model="form.country"
+            @input="clearFieldError('country')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.country ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.country" class="mt-1 text-sm text-red-600">{{ errors.country }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="birthday" class="block text-sm/6 font-medium text-gray-900">Date de naissance</label>
+        <div class="mt-2">
+          <input
+            type="date"
+            name="birthday"
+            id="birthday"
+            autocomplete="birthday"
+            v-model="form.birthday"
+            @input="clearFieldError('birthday')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.birthday ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.birthday" class="mt-1 text-sm text-red-600">{{ errors.birthday }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="is_active" class="block text-sm/6 font-medium text-gray-900">Est actif</label>
+        <div class="mt-2">
+          <input
+            type="checkbox"
+            name="is_active"
+            id="is_active"
+            autocomplete="is_active"
+            v-model="form.is_active"
+            @input="clearFieldError('is_active')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.is_active ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.is_active" class="mt-1 text-sm text-red-600">{{ errors.is_active }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="description" class="block text-sm/6 font-medium text-gray-900">Description</label>
+        <div class="mt-2">
+          <textarea
+            name="description"
+            id="description"
+            autocomplete="description"
+            v-model="form.description"
+            @input="clearFieldError('description')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.description ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.description" class="mt-1 text-sm text-red-600">{{ errors.description }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="price_per_training" class="block text-sm/6 font-medium text-gray-900">Prix par entrainement</label>
+        <div class="mt-2">
+          <input
+            type="number"
+            name="price_per_training"
+            id="price_per_training"
+            autocomplete="price_per_training"
+            v-model="form.price_per_training"
+            @input="clearFieldError('price_per_training')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.price_per_training ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.price_per_training" class="mt-1 text-sm text-red-600">{{ errors.price_per_training }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="phone" class="block text-sm/6 font-medium text-gray-900">Téléphone</label>
+        <div class="mt-2">
+          <input
+            type="text"
+            name="phone"
+            id="phone"
+            autocomplete="phone"
+            v-model="form.phone"
+            @input="clearFieldError('phone')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.phone ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.phone" class="mt-1 text-sm text-red-600">{{ errors.phone }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm/6 font-medium text-gray-900">Mot de passe</label>
+        <div class="mt-2">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            autocomplete="new-password"
+            v-model="form.password"
+            @input="clearFieldError('password')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.password ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
+        </div>
+      </div>
+
+      <div>
+        <label for="confirm-password" class="block text-sm/6 font-medium text-gray-900"
+          >Confirmez le mot de passe</label
+        >
+        <div class="mt-2">
+          <input
+            type="password"
+            name="confirm-password"
+            id="confirm-password"
+            autocomplete="new-password"
+            v-model="form.confirmPassword"
+            @input="clearFieldError('confirmPassword')"
+            required
+            :class="[
+                'block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                errors.confirmPassword ? 'outline-red-500 focus:outline-red-500' : ''
+              ]"
+            :disabled="isLoading"
+          />
+          <p v-if="errors.confirmPassword" class="mt-1 text-sm text-red-600">
+            {{ errors.confirmPassword }}
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          id="submit-button"
+          :disabled="isSubmitDisabled"
+          :class="[
+              'flex w-full justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+              isSubmitDisabled 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-indigo-600 hover:bg-indigo-500'
+            ]"
+        >
+          <span v-if="isLoading" class="flex items-center">
+            <svg
+              class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Inscription en cours...
+          </span>
+          <span v-else>S'inscrire</span>
+        </button>
+      </div>
+
+      <div class="flex items-center my-4">
+        <div class="flex-grow h-px bg-gray-200"></div>
+        <span class="mx-4 text-gray-400 text-sm font-medium">Ou continuez avec</span>
+        <div class="flex-grow h-px bg-gray-200"></div>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          :disabled="isLoading"
+          :class="[
+              'flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm/6 font-semibold text-gray-700 shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+              isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
+            ]"
+          @click="onGoogleRegister"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="h-5 w-5">
+            <g>
+              <path
+                fill="#4285F4"
+                d="M24 9.5c3.54 0 6.7 1.22 9.19 3.23l6.86-6.86C36.68 2.69 30.74 0 24 0 14.82 0 6.73 5.06 2.69 12.44l7.98 6.2C12.13 13.13 17.62 9.5 24 9.5z"
+              />
+              <path
+                fill="#34A853"
+                d="M46.1 24.55c0-1.64-.15-3.22-.42-4.74H24v9.01h12.42c-.54 2.9-2.18 5.36-4.65 7.01l7.19 5.6C43.98 37.13 46.1 31.3 46.1 24.55z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M10.67 28.65A14.5 14.5 0 0 1 9.5 24c0-1.62.28-3.19.77-4.65l-7.98-6.2A23.97 23.97 0 0 0 0 24c0 3.77.9 7.34 2.49 10.49l8.18-5.84z"
+              />
+              <path
+                fill="#EA4335"
+                d="M24 48c6.48 0 11.92-2.15 15.89-5.85l-7.19-5.6c-2.01 1.35-4.59 2.15-8.7 2.15-6.38 0-11.87-3.63-14.33-8.89l-8.18 5.84C6.73 42.94 14.82 48 24 48z"
+              />
+            </g>
+          </svg>
+          Continuer avec Google
+        </button>
+      </div>
+    </form>
+
+    <p class="mt-10 text-center text-sm/6 text-gray-500">
+      Déjà membre ? {{ ' ' }}
+      <a href="/login" class="font-semibold text-indigo-600 hover:text-indigo-500"
+        >Connectez-vous ici</a
+      >
+    </p>
+  </div>
+</div>
